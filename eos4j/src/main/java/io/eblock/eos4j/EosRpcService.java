@@ -1,17 +1,5 @@
 package io.eblock.eos4j;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.eblock.eos4j.api.service.RpcService;
 import io.eblock.eos4j.api.utils.Generator;
 import io.eblock.eos4j.api.vo.Block;
@@ -29,6 +17,18 @@ import io.eblock.eos4j.ese.Action;
 import io.eblock.eos4j.ese.DataParam;
 import io.eblock.eos4j.ese.DataType;
 import io.eblock.eos4j.ese.Ese;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EosRpcService {
 
@@ -424,5 +424,22 @@ public class EosRpcService {
 		// reset expiration
 		tx.setExpiration(dateFormatter.format(new Date(1000 * Long.parseLong(tx.getExpiration().toString()))));
 		return pushTransaction("none", tx, new String[] { sign });
+	}
+   /**
+    * 查询余额
+    * @param eosToken
+    * @param account
+    * @param string
+    * @return
+    */
+	public List<String> getCurrencyBalance(String eosToken, String accountName,
+			String symbol) {
+	     LinkedHashMap<String, String> requestParameters = new LinkedHashMap<>(3);
+
+	        requestParameters.put("code", eosToken);
+	        requestParameters.put("account", accountName);
+	        requestParameters.put("symbol", symbol);
+
+	        return Generator.executeSync(rpcService.getCurrencyBalance(requestParameters));
 	}
 }
