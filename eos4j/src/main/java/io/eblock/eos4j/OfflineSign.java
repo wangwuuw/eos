@@ -7,10 +7,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.eblock.eos4j.api.vo.SignParam;
 import io.eblock.eos4j.api.vo.transaction.push.Tx;
+import io.eblock.eos4j.api.vo.transaction.push.Trx;
 import io.eblock.eos4j.api.vo.transaction.push.TxAction;
 import io.eblock.eos4j.api.vo.transaction.push.TxRequest;
 import io.eblock.eos4j.api.vo.transaction.push.TxSign;

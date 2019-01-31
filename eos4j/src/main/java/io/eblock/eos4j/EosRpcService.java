@@ -2,14 +2,16 @@ package io.eblock.eos4j;
 
 import io.eblock.eos4j.api.service.RpcService;
 import io.eblock.eos4j.api.utils.Generator;
-import io.eblock.eos4j.api.vo.Block;
+import io.eblock.eos4j.api.vo.EOSBlock;
 import io.eblock.eos4j.api.vo.ChainInfo;
 import io.eblock.eos4j.api.vo.SignParam;
 import io.eblock.eos4j.api.vo.TableRows;
 import io.eblock.eos4j.api.vo.TableRowsReq;
 import io.eblock.eos4j.api.vo.account.Account;
 import io.eblock.eos4j.api.vo.transaction.Transaction;
+import io.eblock.eos4j.api.vo.transaction.TransactionEntity;
 import io.eblock.eos4j.api.vo.transaction.push.Tx;
+import io.eblock.eos4j.api.vo.transaction.push.Trx;
 import io.eblock.eos4j.api.vo.transaction.push.TxAction;
 import io.eblock.eos4j.api.vo.transaction.push.TxRequest;
 import io.eblock.eos4j.api.vo.transaction.push.TxSign;
@@ -57,7 +59,7 @@ public class EosRpcService {
 	 *            区块ID或者高度
 	 * @return
 	 */
-	public Block getBlock(String blockNumberOrId) {
+	public EOSBlock getBlock(String blockNumberOrId) {
 		return Generator.executeSync(rpcService.getBlock(Collections.singletonMap("block_num_or_id", blockNumberOrId)));
 	}
 
@@ -125,7 +127,7 @@ public class EosRpcService {
 	public SignParam getOfflineSignParams(Long exp) {
 		SignParam params = new SignParam();
 		ChainInfo info = getChainInfo();
-		Block block = getBlock(info.getLastIrreversibleBlockNum().toString());
+		EOSBlock block = getBlock(info.getLastIrreversibleBlockNum().toString());
 		params.setChainId(info.getChainId());
 		params.setHeadBlockTime(info.getHeadBlockTime());
 		params.setLastIrreversibleBlockNum(info.getLastIrreversibleBlockNum());
@@ -160,7 +162,7 @@ public class EosRpcService {
 //		info.setLastIrreversibleBlockNum(826366l);
 //		info.setHeadBlockTime(dateFormatter.parse("2018-08-22T09:19:01.000"));
 		// get block info
-		Block block = getBlock(info.getLastIrreversibleBlockNum().toString());
+		EOSBlock block = getBlock(info.getLastIrreversibleBlockNum().toString());
 //		block.setRefBlockPrefix(2919590658l);
 		// tx
 		Tx tx = new Tx();
@@ -216,7 +218,7 @@ public class EosRpcService {
 		// get chain info
 		ChainInfo info = getChainInfo();
 		// get block info
-		Block block = getBlock(info.getLastIrreversibleBlockNum().toString());
+		EOSBlock block = getBlock(info.getLastIrreversibleBlockNum().toString());
 		// tx
 		Tx tx = new Tx();
 		tx.setExpiration(info.getHeadBlockTime().getTime() / 1000 + 60);
@@ -287,7 +289,7 @@ public class EosRpcService {
 		// info.setChainId("cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f");
 		// info.setLastIrreversibleBlockNum(22117l);
 		// get block info
-		Block block = getBlock(info.getLastIrreversibleBlockNum().toString());
+		EOSBlock block = getBlock(info.getLastIrreversibleBlockNum().toString());
 		// block.setRefBlockPrefix(3920078619l);
 		// tx
 		Tx tx = new Tx();
@@ -357,7 +359,7 @@ public class EosRpcService {
 		// get chain info
 		ChainInfo info = getChainInfo();
 		// get block info
-		Block block = getBlock(info.getLastIrreversibleBlockNum().toString());
+		EOSBlock block = getBlock(info.getLastIrreversibleBlockNum().toString());
 		// tx
 		Tx tx = new Tx();
 		tx.setExpiration(info.getHeadBlockTime().getTime() / 1000 + 60);
@@ -397,7 +399,7 @@ public class EosRpcService {
 	 */
 	public Transaction close(String pk,String contract,String owner, String symbol)throws Exception {
 		ChainInfo info = getChainInfo();			
-		Block block = getBlock(info.getLastIrreversibleBlockNum().toString());
+		EOSBlock block = getBlock(info.getLastIrreversibleBlockNum().toString());
 		Tx tx = new Tx();
 		tx.setExpiration(info.getHeadBlockTime().getTime() / 1000 + 60);
 		tx.setRef_block_num(info.getLastIrreversibleBlockNum());
@@ -441,5 +443,15 @@ public class EosRpcService {
 	        requestParameters.put("symbol", symbol);
 
 	        return Generator.executeSync(rpcService.getCurrencyBalance(requestParameters));
+	}
+	/**
+	 * 获得区块信息
+	 * 
+	 * @param 
+	 *            txid
+	 * @return
+	 */
+	public TransactionEntity getTransactionByTxId(String txId) {
+		return Generator.executeSync(rpcService.getTransaction(Collections.singletonMap("id", txId)));
 	}
 }

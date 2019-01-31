@@ -1,15 +1,17 @@
 package io.eblock.eos4j.api.service;
 
-import java.util.List;
-import java.util.Map;
-
-import io.eblock.eos4j.api.vo.Block;
-import io.eblock.eos4j.api.vo.TableRows;
 import io.eblock.eos4j.api.vo.ChainInfo;
+import io.eblock.eos4j.api.vo.EOSBlock;
+import io.eblock.eos4j.api.vo.TableRows;
 import io.eblock.eos4j.api.vo.TableRowsReq;
 import io.eblock.eos4j.api.vo.account.Account;
 import io.eblock.eos4j.api.vo.transaction.Transaction;
+import io.eblock.eos4j.api.vo.transaction.TransactionEntity;
 import io.eblock.eos4j.api.vo.transaction.push.TxRequest;
+
+import java.util.List;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -26,8 +28,8 @@ public interface RpcService {
 	Call<ChainInfo> getChainInfo();
 
 	@POST("/v1/chain/get_block")
-	Call<Block> getBlock(@Body Map<String, String> requestFields);
-
+	Call<EOSBlock> getBlock(@Body Map<String, String> requestFields);
+	
 	@POST("/v1/chain/get_account")
 	Call<Account> getAccount(@Body Map<String, String> requestFields);
 	
@@ -39,5 +41,9 @@ public interface RpcService {
 
 	@POST("/v1/chain/get_table_rows")
 	Call<TableRows> getTableRows(@Body TableRowsReq request);
+	
+//	@POST("/v1/history/get_transaction")
+	@POST("/gettransaction")
+	Call<TransactionEntity> getTransaction(@Body Map<String, String> requestFields);
 
 }
